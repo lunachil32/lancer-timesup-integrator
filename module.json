@@ -1,0 +1,43 @@
+{
+    "id": "lancer-timesup-integrator",
+    "title": "Lancer Initiative × Times Up Integrator",
+    "description": "Lancer Initiative と Times Up の互換性を向上させることを目的とした Module 。",
+    "version": "0.1.0",
+  
+    "authors": [
+      {
+        "name": "opabinia"
+      }
+    ],
+  
+    "compatibility": {
+      "minimum": "13",
+      "verified": "13",
+      "maximum": "13"
+    },
+  
+    "esmodules": [
+      "scripts/module.js"
+    ],
+  
+    "relationships": {
+      "requires": [
+        {
+          "id": "lancer-initiative",
+          "type": "module",
+          "compatibility": {
+            "minimum": "34",
+            "verified": "34"
+          }
+        },
+        {
+          "id": "times-up",
+          "type": "module",
+          "compatibility": {
+            "minimum": "13.1.9",
+            "verified": "13.1.9"
+          }
+        }
+      ]
+    }
+  }
