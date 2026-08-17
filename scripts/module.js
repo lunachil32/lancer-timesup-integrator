@@ -10,9 +10,6 @@ Hooks.on("combatTurnChange", (combat, previous, current) => {
     const previousCombatant = combat.combatants.get(previous.combatantId) ?? null;
     const currentCombatant = combat.combatants.get(current.combatantId) ?? null;
 
-    const previousName = previousCombatant?.name ?? "None";
-    const currentName = currentCombatant?.name ?? "None";
-
     if (previousCombatant) {
         onActivationEnd(previousCombatant);
     }
