@@ -13,14 +13,27 @@ Hooks.on("combatTurnChange", (combat, previous, current) => {
     const previousName = previousCombatant?.name ?? "None";
     const currentName = currentCombatant?.name ?? "None";
 
-    console.log(
-        `${MODULE_ID} | Turn changed: ${previousName} -> ${currentName}`,
-        {
-            combat,
-            previous,
-            current,
-            previousCombatant,
-            currentCombatant
-        }
-    );
+    if (previousCombatant) {
+        onActivationEnd(previousCombatant);
+    }
+
+    if (currentCombatant) {
+        onActivationStart(currentCombatant);
+    }
 });
+
+function onActivationStart(combatant) {
+    const combatantName = combatant?.name ?? "None";
+    console.log(
+        `${MODULE_ID} | Activation started: ${combatantName}`,
+        combatant
+    );
+}
+
+function onActivationEnd(combatant) {
+    const combatantName = combatant?.name ?? "None";
+    console.log(
+        `${MODULE_ID} | Activation ended: ${combatantName}`,
+        combatant
+    );
+}
