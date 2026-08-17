@@ -5,6 +5,8 @@ Hooks.once("init", () => {
 });
 
 Hooks.on("combatTurnChange", (combat, previous, current) => {
+    if (previous.combatantId === current.combatantId) return; // 変化がなければなにもしない ( ラウンドの変化などで発生する )
+
     const previousCombatant = combat.combatants.get(previous.combatantId) ?? null;
     const currentCombatant = combat.combatants.get(current.combatantId) ?? null;
 
