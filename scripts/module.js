@@ -4,7 +4,7 @@ Hooks.once("init", () => {
     console.log(`${MODULE_ID} | Initialized`);
 });
 
-Hooks.on("combatTurnChange", (combat, previous, current) => {
+Hooks.on("combatTurnChange", async (combat, previous, current) => {
     if (previous.combatantId === current.combatantId) return; // 変化がなければなにもしない ( ラウンドの変化などで発生する )
 
     const previousCombatant = combat.combatants.get(previous.combatantId) ?? null;
@@ -15,14 +15,21 @@ Hooks.on("combatTurnChange", (combat, previous, current) => {
     }
 
     if (currentCombatant) {
-        onActivationStart(currentCombatant);
+        await onActivationStart(currentCombatant);
     }
 });
 
-function onActivationStart(combatant) {
-    const combatantName = combatant?.name ?? "None";
+async function onActivationStart(combatant) {
+    const count = combatant.getFlag(MODULE_ID, "activationCount") ?? 0;
+
+    await combatant.setFlag(
+        MODULE_ID,
+        "activationCount",
+        count + 1
+    );
+
     console.log(
-        `${MODULE_ID} | Activation started: ${combatantName}`,
+        `${MODULE_ID} | Activation started: ${combatant.name} (${count + 1})`,
         combatant
     );
 }
