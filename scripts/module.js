@@ -20,6 +20,7 @@ Hooks.on("combatTurnChange", async (combat, previous, current) => {
 });
 
 async function onActivationStart(combatant) {
+    if (!game.users.activeGM?.isSelf) return;
     const count = combatant.getFlag(MODULE_ID, "activationCount") ?? 0;
 
     await combatant.setFlag(
