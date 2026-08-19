@@ -4,6 +4,52 @@ Hooks.once("init", () => {
     console.log(`${MODULE_ID} | Initialized`);
 });
 
+Hooks.on("createActiveEffect", async (effect) => {
+    if (!game.users.activeGM?.isSelf) return;
+
+    const expiry = effect.getFlag(MODULE_ID, "expiry");
+    if (expiry !== "sourceActivationEnd") return;
+
+    const origin = effect.origin
+        ? await fromUuid(effect.origin)
+        : null;
+
+    const sourceActor =
+        origin?.documentName === "Actor"
+            ? origin
+            : origin?.actor ?? null;
+
+    if (!sourceActor) return;
+
+    const combat = game.combat;
+    if (!combat) return;
+
+    const sourceCombatant = combat.combatants.find(
+        combatant => combatant.actor?.id === sourceActor.id
+    );
+
+    if (!sourceCombatant) return;
+
+    const activationCount =
+        sourceCombatant.getFlag(MODULE_ID, "activationCount") ?? 0;
+
+    await effect.setFlag(
+        MODULE_ID,
+        "startActivationCount",
+        activationCount
+    );
+
+    console.log(
+        `${MODULE_ID} | Effect initialized`,
+        {
+            effect,
+            sourceActor,
+            sourceCombatant,
+            startActivationCount: activationCount
+        }
+    );
+});
+
 Hooks.on("combatTurnChange", async (combat, previous, current) => {
     if (previous.combatantId === current.combatantId) return; // 変化がなければなにもしない ( ラウンドの変化などで発生する )
 
