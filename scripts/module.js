@@ -1,7 +1,18 @@
-const MODULE_ID = "lancer-timesup-integrator";
+import { MODULE_ID } from "./constants.js";
+import {
+    createSourceActivationEndEffect
+} from "./debug.js";
 
 Hooks.once("init", () => {
     console.log(`${MODULE_ID} | Initialized`);
+});
+
+Hooks.once("ready", () => {
+    game.modules.get(MODULE_ID).api = {
+        debug: {
+            createSourceActivationEndEffect
+        }
+    };
 });
 
 Hooks.on("createActiveEffect", async (effect) => {
